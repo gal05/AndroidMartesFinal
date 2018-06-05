@@ -2,8 +2,14 @@ package com.tecsup.guerra.androidmartesfinal;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,5 +33,33 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseAnalytics.setUserProperty("username", "dlopez");
 
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d(TAG, "user: " + user);
+
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                callLogout(null);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void callLogout(View view){
+        Log.d(TAG, "Ssign out user");
+        FirebaseAuth.getInstance().signOut();
+        finish();
+    }
+
 }
